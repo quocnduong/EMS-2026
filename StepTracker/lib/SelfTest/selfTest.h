@@ -4,7 +4,7 @@
 #include <Arduino.h>
 #include "hw_config.h"
 
-class selfTest {
+class SelfTest {
 private:
 	BoardConfig config_;
 
@@ -21,8 +21,8 @@ private:
     double tolerance_ = 0.1;
 
 public:
-	explicit selfTest(const BoardConfig &config);
-	void run();
+    explicit SelfTest(const BoardConfig &config);
+	bool run();
 };
 
 #endif
