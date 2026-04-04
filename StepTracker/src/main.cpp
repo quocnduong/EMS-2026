@@ -1,18 +1,25 @@
 #include <Arduino.h>
+#include "hw_config.h"
+#include "selfTest.h"
 
-// put function declarations here:
-int myFunction(int, int);
+BoardConfig boardConfig{
+  35, // redLedPin
+  32, // yellowLedPin
+  33, // greenLedPin
+  5,  // STPin
+  25, // XPin
+  26, // YPin
+  27, // ZPin
+  18, // pushButtonAPin
+  19, // pushButtonBPin
+  21, // lcdSDAPin
+  22  // lcdSCLPin
+};
 
 void setup() {
-  // put your setup code here, to run once:
-  int result = myFunction(2, 3);
+
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-}
 
-// put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
 }
