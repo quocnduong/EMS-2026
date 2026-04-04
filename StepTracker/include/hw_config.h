@@ -17,4 +17,6 @@ struct BoardConfig {
   uint8_t lcdSCLPin;
 };
 
+void configureBoardPins(const BoardConfig &config);
+
 #endif

@@ -17,7 +17,7 @@ BoardConfig boardConfig{
 };
 
 void setup() {
-
+  configureBoardPins(boardConfig);
 }
 
 void loop() {

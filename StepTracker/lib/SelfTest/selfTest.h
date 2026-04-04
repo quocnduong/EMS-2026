@@ -8,9 +8,16 @@ class selfTest {
 private:
 	BoardConfig config_;
 
+    double oldX;
+    double oldY;
+    double oldZ;
+
+    double newX;
+    double newY;
+    double newX;
+
 public:
 	explicit selfTest(const BoardConfig &config);
-	void begin();
 	void run();
 };
 
