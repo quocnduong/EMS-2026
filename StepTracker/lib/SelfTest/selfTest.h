@@ -8,13 +8,17 @@ class selfTest {
 private:
 	BoardConfig config_;
 
-    double oldX;
-    double oldY;
-    double oldZ;
+    double oldX_;
+    double oldY_;
+    double oldZ_;
 
-    double newX;
-    double newY;
-    double newX;
+    double newX_;
+    double newY_;
+    double newZ_;
+
+    bool isStationary_;
+
+    double tolerance_ = 0.1;
 
 public:
 	explicit selfTest(const BoardConfig &config);
