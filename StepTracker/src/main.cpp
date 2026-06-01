@@ -23,5 +23,5 @@ void setup() {
 }
 
 void loop() {
-  selfTest.run();
+  selfTest.run(); //add voltage
 }
