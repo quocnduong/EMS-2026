@@ -20,8 +20,9 @@ SelfTest selfTest(boardConfig);
 
 void setup() {
   initializeBoardPins(boardConfig);
+  selfTest.run(); //add voltage
 }
 
 void loop() {
-  selfTest.run(); //add voltage
+  
 }
