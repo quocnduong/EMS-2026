@@ -19,10 +19,11 @@ private:
     bool isStationary_;
 
     double tolerance_ = 0.1;
+    static constexpr double adcReferenceVoltage_ = 3.3;
 
 public:
     explicit SelfTest(const BoardConfig &config);
-	bool run();
+	bool run(double supplyVoltage = 3.3);
 };
 
 #endif
