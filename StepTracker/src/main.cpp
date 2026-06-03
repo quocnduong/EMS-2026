@@ -4,9 +4,10 @@
 #include "Calibration.h"
 #include "StepCounter.h"
 #include "PaceClassifier.h"
+#include "DisplayUI.h"
 
-#define SIMULATION_MODE true
-#define RUN_FAKE_RANDOM_DATA true
+#define SIMULATION_MODE false
+#define RUN_FAKE_RANDOM_DATA false
 
 BoardConfig boardConfig{
   32, // redLedPin
@@ -28,6 +29,8 @@ StepCounter stepCounter;
 PaceClassifier paceClassifier;
 
 CalibrationResult calResult;
+
+DisplayUI display(boardConfig.lcdSDAPin, boardConfig.lcdSCLPin, 0x27);
 
 enum class FakeActivity {
   STATIONARY,
@@ -136,7 +139,10 @@ void setup() {
   delay(1000);
 
   initializeBoardPins(boardConfig);
-
+  display.begin();
+  display.showStartup();
+  delay(1000);
+  
   randomSeed(micros());
 
 #if SIMULATION_MODE
@@ -208,9 +214,23 @@ void loop() {
 
   paceClassifier.update(now);
 
+  double stepsPerMinute = paceClassifier.getCadence();
+  double stepsPerSecond = stepsPerMinute / 60.0;
+
+  display.update(
+      stepCounter.getStepCount(),
+      stepsPerMinute,
+      stepsPerSecond,
+      paceClassifier.getPaceType(),
+      stepDetected
+  );
+
+#if SIMULATION_MODE  
   Serial.print("Fake:");
   Serial.print(fakeActivityToString(currentFakeActivity));
-
+#else
+  Serial.print("RealSensor");
+#endif
   Serial.print(" | X:");
   Serial.print(accel.xG, 2);
 

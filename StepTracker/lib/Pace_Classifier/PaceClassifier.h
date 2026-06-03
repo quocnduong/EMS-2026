@@ -28,6 +28,7 @@ public:
 private:
     int stepsInWindow_;
     unsigned long windowStartMs_;
+    
 
     double cadence_;
     PaceType paceType_;
