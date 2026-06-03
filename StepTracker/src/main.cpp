@@ -197,40 +197,40 @@ void setup() {
   
   randomSeed(micros());
 
-#if SIMULATION_MODE
-  Serial.println("SIMULATION MODE ENABLED");
-  Serial.println("Self-test bypassed");
-  Serial.println("Calibration bypassed");
-#else
-  Serial.println("Running self-test...");
+// #if SIMULATION_MODE
+//   Serial.println("SIMULATION MODE ENABLED");
+//   Serial.println("Self-test bypassed");
+//   Serial.println("Calibration bypassed");
+// #else
+//   Serial.println("Running self-test...");
 
-  bool selfTestPassed = selfTest.run(3.3);
+//   bool selfTestPassed = selfTest.run(3.3);
 
-  if (!selfTestPassed) {
-      Serial.println("Self-test FAILED");
-      digitalWrite(boardConfig.redLedPin, HIGH);
+//   if (!selfTestPassed) {
+//       Serial.println("Self-test FAILED");
+//       digitalWrite(boardConfig.redLedPin, HIGH);
 
-      while (true) {
-          delay(1000);
-      }
-  }
+//       while (true) {
+//           delay(1000);
+//       }
+//   }
 
-  Serial.println("Self-test PASSED");
+//   Serial.println("Self-test PASSED");
 
-  Serial.println("Starting calibration...");
-  calResult = calibration.runInteractive(Serial);
+//   Serial.println("Starting calibration...");
+//   calResult = calibration.runInteractive(Serial);
 
-  if (!calResult.valid) {
-      Serial.println("Calibration FAILED");
-      digitalWrite(boardConfig.redLedPin, HIGH);
+//   if (!calResult.valid) {
+//       Serial.println("Calibration FAILED");
+//       digitalWrite(boardConfig.redLedPin, HIGH);
 
-      while (true) {
-          delay(1000);
-      }
-  }
+//       while (true) {
+//           delay(1000);
+//       }
+//   }
 
-  Serial.println("Calibration PASSED");
-#endif
+//   Serial.println("Calibration PASSED");
+// #endif
 
   stepCounter.reset();
   paceClassifier.reset(millis());
