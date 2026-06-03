@@ -16,7 +16,7 @@ DisplayUI::DisplayUI(uint8_t sdaPin, uint8_t sclPin, uint8_t lcdAddress)
 void DisplayUI::begin() {
     Wire.begin(sdaPin_, sclPin_);
 
-    lcd.init();
+    lcd.init(); 
     lcd.backlight();
 
     lcd.clear();

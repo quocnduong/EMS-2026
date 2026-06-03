@@ -30,6 +30,9 @@ PaceClassifier paceClassifier;
 
 CalibrationResult calResult;
 
+unsigned long lastButtonPressMs = 0;
+const unsigned long buttonDebounceMs = 300;
+
 DisplayUI display(boardConfig.lcdSDAPin, boardConfig.lcdSCLPin, 0x27);
 
 enum class FakeActivity {
@@ -134,6 +137,55 @@ AccelData getFakeAccel(unsigned long nowMs) {
   };
 }
 
+void resetStepTracking() {
+  stepCounter.reset();
+  paceClassifier.reset(millis());
+
+  Serial.println("SW1 pressed: step count reset");
+
+  display.showStartup();
+  delay(500);
+}
+
+void recalibrateSensor() {
+  Serial.println("SW2 pressed: recalibration started");
+
+  digitalWrite(boardConfig.greenLedPin, LOW);
+  digitalWrite(boardConfig.yellowLedPin, HIGH);
+
+  display.showCalibration(false);
+
+#if SIMULATION_MODE
+  Serial.println("Simulation mode: calibration skipped");
+#else
+  calResult = calibration.runInteractive(Serial);
+
+  if (!calResult.valid) {
+      Serial.println("Recalibration FAILED");
+
+      digitalWrite(boardConfig.redLedPin, HIGH);
+      digitalWrite(boardConfig.yellowLedPin, LOW);
+
+      display.showCalibration(false);
+      delay(1000);
+      return;
+  }
+
+  Serial.println("Recalibration PASSED");
+  calibration.printResult(calResult, Serial);
+#endif
+
+  stepCounter.reset();
+  paceClassifier.reset(millis());
+
+  digitalWrite(boardConfig.redLedPin, LOW);
+  digitalWrite(boardConfig.yellowLedPin, LOW);
+  digitalWrite(boardConfig.greenLedPin, HIGH);
+
+  display.showCalibration(true);
+  delay(1000);
+}
+
 void setup() {
   Serial.begin(115200);
   delay(1000);
@@ -188,6 +240,20 @@ void setup() {
 
 void loop() {
   unsigned long now = millis();
+
+  if (now - lastButtonPressMs > buttonDebounceMs) {
+    if (digitalRead(boardConfig.pushButtonAPin) == HIGH) {
+        lastButtonPressMs = now;
+        resetStepTracking();
+        return;
+    }
+  
+    if (digitalRead(boardConfig.pushButtonBPin) == HIGH) {
+        lastButtonPressMs = now;
+        recalibrateSensor();
+        return;
+    }
+  }
 
   AccelData accel;
 
